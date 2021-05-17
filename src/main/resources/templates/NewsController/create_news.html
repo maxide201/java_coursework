@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание</title>
+</head>
+<body>
+<h3>Создание новостного поста</h3>
+<form method="POST" action="/create_news">
+    <label for="title">Заголовок: </label>
+    <input type="text" id="title" name="title">
+    <br>
+    <label for="content">Содержание: </label>
+    <textarea id="content" name="content"></textarea>
+    <br>
+    <input type="text" name="section_name" list="section_names">
+    <datalist id="section_names">
+        <option th:each="section : ${sections}" th:text="${section.getName()}">
+        </option>
+    </datalist>
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>

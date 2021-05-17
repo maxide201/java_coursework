@@ -1,5 +1,6 @@
 package news.Services;
 
+import news.Models.News;
 import news.Repositories.INewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,7 @@ public class NewsService {
     }
 
 
-
+    public void AddNews(News news) {
+        newsRepository.save(news);
+    }
 }

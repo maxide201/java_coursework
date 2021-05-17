@@ -51,4 +51,15 @@ public class SectionController {
         else setStatus("section_exist");
         return "redirect:/sections";
     }
+
+    @PostMapping("/delete")
+    public String DeleteSection(@RequestParam String name,
+                             Model model){
+        Section section = sectionService.FindByName(name);
+        if(section != null) {
+            sectionService.DeleteSection(section);
+        }
+        else setStatus("section_not_exist");
+        return "redirect:/sections";
+    }
 }

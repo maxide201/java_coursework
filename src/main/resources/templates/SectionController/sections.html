@@ -13,6 +13,8 @@
     <p th:if="${status == 'section_exist'}">Данный раздел уже существует!</p>
 </form>
 <hr>
+<a th:href="@{/create_news}">Напсиать новостной пост</a>
+<hr>
 <div th:each="section : ${sections}">
     <a th:href="@{/sections/{name}(name=${section.getName()})}" th:text="${section.getName()}"></a>
     <br>

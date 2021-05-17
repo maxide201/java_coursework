@@ -6,9 +6,9 @@
 </head>
 <body>
     <h1 th:text="${section.getName()}"></h1>
-    <div th:each="news : ${section.getNews()}" >
+    <div th:each="news : ${section.getNews()}">
+        <hr>
         <p th:text="${news.getTitle()}"></p>
-        <br>
         <p th:text="${news.getContent()}"></p>
     </div>
 </body>

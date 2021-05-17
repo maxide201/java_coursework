@@ -28,4 +28,6 @@ public class SectionService {
     public List<Section> GetAllSections(){
         return sectionRepository.findAll();
     }
+
+    public void DeleteSection(Section section) { sectionRepository.delete(section); }
 }
