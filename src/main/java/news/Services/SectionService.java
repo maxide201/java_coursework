@@ -30,4 +30,6 @@ public class SectionService {
     }
 
     public void DeleteSection(Section section) { sectionRepository.delete(section); }
+
+    public Section FindById(int id) { return sectionRepository.findById(id);  }
 }

@@ -16,7 +16,7 @@
 <a th:href="@{/create_news}">Напсиать новостной пост</a>
 <hr>
 <div th:each="section : ${sections}">
-    <a th:href="@{/sections/{name}(name=${section.getName()})}" th:text="${section.getName()}"></a>
+    <a th:href="@{/sections/{id}(id=${section.getId()})}" th:text="${section.getName()}"></a>
     <br>
 </div>
 </body>

@@ -20,4 +20,5 @@ public class NewsService {
     public void AddNews(News news) {
         newsRepository.save(news);
     }
+    public News FindNewsById(int id) { return newsRepository.findById(id);}
 }

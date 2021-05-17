@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/sections")
 public class SectionController {
@@ -30,9 +32,10 @@ public class SectionController {
         return "SectionController/sections";
     }
 
-    @GetMapping("/{name}")
-    public String GetSectionNews(@PathVariable("name") String name, Model model){
-        Section section = sectionService.FindByName(name);
+    @GetMapping("/{id}")
+    public String GetSectionNews(@PathVariable("id") int id, Model model){
+        List<Section> aaa = sectionService.GetAllSections();
+        Section section = sectionService.FindById(id);
         if(section != null) {
             model.addAttribute("section", section);
             return "SectionController/section";

@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ISectionRepository extends JpaRepository<Section, Integer> {
     Section findByName(String name);
+    Section findById(int id);
 }

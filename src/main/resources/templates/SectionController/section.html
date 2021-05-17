@@ -8,8 +8,19 @@
     <h1 th:text="${section.getName()}"></h1>
     <div th:each="news : ${section.getNews()}">
         <hr>
-        <p th:text="${news.getTitle()}"></p>
+        <h3 th:text="${news.getTitle()}"></h3>
         <p th:text="${news.getContent()}"></p>
+        <h4>Комментарии:</h4>
+        <div th:each="comment : ${news.getComments()}">
+            <p th:text="${comment.getContent()}"></p>
+        </div>
+        <form method="POST" action="/comments">
+            <label for="content">Комментарий: </label>
+            <input type="text" id="content" name="content">
+            <input type="hidden" name="user_id" th:value="1">
+            <input type="hidden" name="news_id" th:value="${news.getId()}">
+            <button type="submit">Отправить</button>
+        </form>
     </div>
 </body>
 </html>
