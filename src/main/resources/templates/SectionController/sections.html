@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Разделы</title>
+</head>
+<body>
+<h3>Создание раздела</h3>
+<form method="POST" action="/sections">
+    <label for="name">Название: </label>
+    <input type="text" id="name" name="name">
+    <button type="submit">Создать</button>
+    <p th:if="${status == 'section_exist'}">Данный раздел уже существует!</p>
+</form>
+<hr>
+<div th:each="section : ${sections}">
+    <a th:href="@{/sections/{name}(name=${section.getName()})}" th:text="${section.getName()}"></a>
+    <br>
+</div>
+</body>
+</html>

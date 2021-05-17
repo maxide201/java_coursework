@@ -22,5 +22,6 @@ create table if not exists comments
 (
     id serial primary key,
     content text,
-    user_id integer
+    user_id integer,
+    news_id integer
 );

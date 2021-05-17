@@ -18,6 +18,6 @@ public class Section {
     private int id;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "news", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "section", fetch = FetchType.EAGER)
     private List<News> news;
 }

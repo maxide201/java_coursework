@@ -19,4 +19,6 @@ public class Comment {
     private String content;
     @ManyToOne
     private User user;
+    @ManyToOne
+    private News news;
 }
