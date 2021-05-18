@@ -5,18 +5,33 @@
     <title>Разделы</title>
 </head>
 <body>
-<h3>Создание раздела</h3>
-<form method="POST" action="/sections">
-    <label for="name">Название: </label>
-    <input type="text" id="name" name="name">
-    <button type="submit">Создать</button>
-    <p th:if="${status == 'section_exist'}">Данный раздел уже существует!</p>
-</form>
-<hr>
-<a th:href="@{/create_news}">Напсиать новостной пост</a>
-<hr>
+<div th:if="${user.getRole().equals('UNKNOWN')}" style="border: 1px solid black">
+    <a th:href="@{/login}">Войти</a>
+    <a th:href="@{/sign}">Зарегистрироваться</a>
+</div>
+<div th:if="${!user.getRole().equals('UNKNOWN')}" style="border: 1px solid black">
+    <a th:href="@{/logout}">Выход</a>
+</div>
+<div th:if="${user.getRole().equals('ADMIN')}">
+    <h3>Создание раздела</h3>
+    <form method="POST" action="/sections/create">
+        <label for="name">Название: </label>
+        <input type="text" id="name" name="name">
+        <button type="submit">Создать</button>
+        <p th:if="${status == 'section_exist'}">Данный раздел уже существует!</p>
+    </form>
+    <hr>
+</div>
+<div th:if="${user.getRole().equals('AUTHOR')}">
+    <a th:href="@{/news/create}">Напсиать новостной пост</a>
+    <hr>
+</div>
 <div th:each="section : ${sections}">
     <a th:href="@{/sections/{id}(id=${section.getId()})}" th:text="${section.getName()}"></a>
+    <form th:if="${user.getRole().equals('ADMIN')}" method="POST" action="/sections/delete">
+        <input type="hidden" name="id" th:value="${section.getId()}">
+        <button type="submit">Удалить</button>
+    </form>
     <br>
 </div>
 </body>

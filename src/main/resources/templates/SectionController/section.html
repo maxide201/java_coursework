@@ -6,22 +6,33 @@
 </head>
 <body>
 <h1 th:text="${section.getName()}"></h1>
+<a th:href="'/sections'">К разделам</a>
 <div th:each="post : ${section.getNews()}">
     <hr>
     <h3 th:text="${post.getTitle()}"></h3>
+    <form th:if="${user.getRole().equals('ADMIN')}" method="POST" action="/news/delete">
+        <input type="hidden" name="id" th:value="${post.getId()}">
+        <button type="submit">Удалить</button>
+    </form>
     <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
     <p th:text="${post.getContent()}"></p>
     <h4>Комментарии:</h4>
     <div th:each="comment : ${post.getComments()}">
         <div style="border: 1px solid black">
+            <h5 th:text="${comment.getUser().getUsername()}"></h5>
             <p th:text="${comment.getContent()}"></p>
             <p th:text="${formatForTime.format(comment.getDate())}" style="font-size: 10px"></p>
+            <form th:if="${user.getRole().equals('ADMIN')}" method="POST" action="/comments/delete">
+                <input type="hidden" name="id" th:value="${comment.getId()}">
+                <input type="hidden" name="news_id" th:value="${post.getId()}">
+                <button type="submit">Удалить</button>
+            </form>
         </div>
     </div>
-    <form method="POST" action="/comments">
+    <form th:if="${!user.getRole().equals('UNKNOWN')}" method="POST" action="/comments">
         <label for="content">Комментарий: </label>
         <input type="text" id="content" name="content">
-        <input type="hidden" name="user_id" th:value="${1}">
+        <input type="hidden" name="user_id" th:value="${user.getId()}">
         <input type="hidden" name="news_id" th:value="${post.getId()}">
         <button type="submit">Отправить</button>
     </form>

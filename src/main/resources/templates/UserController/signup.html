@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<form method="POST" action="/sign">
+    <label for="username">username</label>
+    <input type="text" id="username" name="username">
+    <label for="password">password</label>
+    <input type="text" id="password" name="password">
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<p th:if="${status == 'user_exists'}" th:text="'Пользователь с данным логином уже существует'"></p>
+</body>
+</html>

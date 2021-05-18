@@ -16,7 +16,8 @@ create table if not exists users
 (
     id serial primary key,
     username text,
-    password text
+    password text,
+    role text
 );
 
 create table if not exists comments

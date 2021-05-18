@@ -6,7 +6,8 @@
 </head>
 <body>
 <h3>Создание новостного поста</h3>
-<form method="POST" action="/create_news">
+<a th:href="'/sections'">К разделам</a>
+<form method="POST" action="/news/create">
     <label for="title">Заголовок: </label>
     <input type="text" id="title" name="title">
     <br>

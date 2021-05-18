@@ -2,9 +2,10 @@ package news.Controllers;
 
 import news.Models.Comment;
 import news.Models.News;
+import news.Models.User;
 import news.Services.CommentService;
 import news.Services.NewsService;
-import org.springframework.http.MediaType;
+import news.Services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,13 @@ import java.util.Date;
 public class CommentsController {
     private final CommentService commentService;
     private final NewsService newsService;
+    private final UserService userService;
     private String status;
 
-    public CommentsController(CommentService commentService, NewsService newsService) {
+    public CommentsController(CommentService commentService, NewsService newsService, UserService userService) {
         this.commentService = commentService;
         this.newsService = newsService;
+        this.userService = userService;
     }
 
     private void setStatus(String newStatus) {
@@ -39,15 +42,36 @@ public class CommentsController {
         News news = null;
         if(!content.equals("")) {
             news = newsService.FindNewsById(news_id);
-            if(news != null){
+            User user = userService.FindUserById(user_id);
+            if(news != null && user != null){
                 Comment comment = new Comment();
                 comment.setContent(content);
                 comment.setNews(news);
+                comment.setUser(user);
                 Date date = new Date(System.currentTimeMillis());
                 comment.setDate(new Date(System.currentTimeMillis()));
                 commentService.AddComment(comment);
             }
         }
-        return "redirect:/sections/"+news.getSection().getId();
+        if(news != null)
+            return "redirect:/sections/"+news.getSection().getId();
+        else
+            return "redirect:/sections";
+    }
+
+    @PostMapping("/delete")
+    public String DeleteComment(@RequestParam int id,
+                                @RequestParam int news_id,
+                                Model model)
+    {
+        News news = newsService.FindNewsById(news_id);
+        if(news != null) {
+            Comment comment = commentService.FindById(id);
+            if(comment != null)
+                commentService.DeleteComment(comment);
+            return "redirect:/sections/" + news.getSection().getId();
+        }
+        else
+            return "redirect:/sections";
     }
 }

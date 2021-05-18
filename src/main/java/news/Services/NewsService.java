@@ -21,4 +21,5 @@ public class NewsService {
         newsRepository.save(news);
     }
     public News FindNewsById(int id) { return newsRepository.findById(id);}
+    public void DeleteNews(News news) {newsRepository.delete(news);}
 }

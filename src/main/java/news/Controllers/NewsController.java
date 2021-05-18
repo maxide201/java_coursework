@@ -1,5 +1,6 @@
 package news.Controllers;
 
+import news.Models.Comment;
 import news.Models.News;
 import news.Models.Section;
 import news.Services.NewsService;
@@ -12,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/create_news")
+@RequestMapping("/news")
 public class NewsController {
     private final NewsService newsService;
     private final SectionService sectionService;
@@ -29,13 +30,13 @@ public class NewsController {
         this.newsService = newsService;
         this.sectionService = sectionService;
     }
-    @GetMapping
+    @GetMapping("/create")
     public String CreatingNews(Model model) {
         model.addAttribute("sections", sectionService.GetAllSections());
         return "NewsController/create_news";
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public String AddNews(@RequestParam String title,
                           @RequestParam String content,
                           @RequestParam String section_name,
@@ -52,5 +53,18 @@ public class NewsController {
             model.addAttribute("section", section);
         }
         return "redirect:/sections";
+    }
+
+    @PostMapping("/delete")
+    public String DeleteNews(@RequestParam int id,
+                             Model model)
+    {
+        News news = newsService.FindNewsById(id);
+        if(news != null) {
+            newsService.DeleteNews(news);
+            return "redirect:/sections/" + news.getSection().getId();
+        }
+        else
+            return "redirect:/sections";
     }
 }
