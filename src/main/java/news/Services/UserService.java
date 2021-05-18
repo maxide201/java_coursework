@@ -40,4 +40,5 @@ public class UserService implements UserDetailsService {
     }
     public User FindUserById(int id){ return userRepository.findById(id);}
 
+    public void UpdateUser(User user) { userRepository.save(user);  }
 }

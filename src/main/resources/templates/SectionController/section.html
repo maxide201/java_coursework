@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1 th:text="${section.getName()}"></h1>
-<a th:href="'/sections'">К разделам</a>
+<a th:href="@{/sections}">К разделам</a>
 <div th:each="post : ${section.getNews()}">
     <hr>
     <h3 th:text="${post.getTitle()}"></h3>

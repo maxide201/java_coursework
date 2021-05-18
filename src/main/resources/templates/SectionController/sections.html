@@ -21,6 +21,8 @@
         <p th:if="${status == 'section_exist'}">Данный раздел уже существует!</p>
     </form>
     <hr>
+    <a th:href="@{/roles}">Изменить роли</a>
+    <hr>
 </div>
 <div th:if="${user.getRole().equals('AUTHOR')}">
     <a th:href="@{/news/create}">Напсиать новостной пост</a>
