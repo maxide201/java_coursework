@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @Controller
 @RequestMapping( "/comments")
 public class CommentsController {
@@ -41,6 +43,8 @@ public class CommentsController {
                 Comment comment = new Comment();
                 comment.setContent(content);
                 comment.setNews(news);
+                Date date = new Date(System.currentTimeMillis());
+                comment.setDate(new Date(System.currentTimeMillis()));
                 commentService.AddComment(comment);
             }
         }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -37,6 +38,8 @@ public class SectionController {
         List<Section> aaa = sectionService.GetAllSections();
         Section section = sectionService.FindById(id);
         if(section != null) {
+            model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
+            model.addAttribute("formatForTime", new SimpleDateFormat("hh:mm"));
             model.addAttribute("section", section);
             return "SectionController/section";
         }

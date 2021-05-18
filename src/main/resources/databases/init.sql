@@ -3,6 +3,7 @@ create table if not exists news
     id serial primary key,
     title text,
     content text,
+    date date,
     section_id integer
 );
 create table if not exists sections
@@ -22,6 +23,7 @@ create table if not exists comments
 (
     id serial primary key,
     content text,
+    date timestamp,
     user_id integer,
     news_id integer
 );

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 @RequestMapping("/create_news")
 public class NewsController {
@@ -44,6 +47,7 @@ public class NewsController {
             news.setContent(content);
             Section section = sectionService.FindByName(section_name);
             news.setSection(section);
+            news.setDate(new Date(System.currentTimeMillis()));
             newsService.AddNews(news);
             model.addAttribute("section", section);
         }

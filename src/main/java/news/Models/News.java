@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,9 @@ public class News {
     private String title;
     @Column(name = "content")
     private String content;
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
     @OneToMany(mappedBy = "news", fetch = FetchType.EAGER)
     private List<Comment> comments;
     @ManyToOne

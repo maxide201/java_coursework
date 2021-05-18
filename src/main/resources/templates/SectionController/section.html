@@ -5,22 +5,26 @@
     <title th:text="${section.getName()}"></title>
 </head>
 <body>
-    <h1 th:text="${section.getName()}"></h1>
-    <div th:each="news : ${section.getNews()}">
-        <hr>
-        <h3 th:text="${news.getTitle()}"></h3>
-        <p th:text="${news.getContent()}"></p>
-        <h4>Комментарии:</h4>
-        <div th:each="comment : ${news.getComments()}">
+<h1 th:text="${section.getName()}"></h1>
+<div th:each="post : ${section.getNews()}">
+    <hr>
+    <h3 th:text="${post.getTitle()}"></h3>
+    <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
+    <p th:text="${post.getContent()}"></p>
+    <h4>Комментарии:</h4>
+    <div th:each="comment : ${post.getComments()}">
+        <div style="border: 1px solid black">
             <p th:text="${comment.getContent()}"></p>
+            <p th:text="${formatForTime.format(comment.getDate())}" style="font-size: 10px"></p>
         </div>
-        <form method="POST" action="/comments">
-            <label for="content">Комментарий: </label>
-            <input type="text" id="content" name="content">
-            <input type="hidden" name="user_id" th:value="1">
-            <input type="hidden" name="news_id" th:value="${news.getId()}">
-            <button type="submit">Отправить</button>
-        </form>
     </div>
+    <form method="POST" action="/comments">
+        <label for="content">Комментарий: </label>
+        <input type="text" id="content" name="content">
+        <input type="hidden" name="user_id" th:value="${1}">
+        <input type="hidden" name="news_id" th:value="${post.getId()}">
+        <button type="submit">Отправить</button>
+    </form>
+</div>
 </body>
 </html>
