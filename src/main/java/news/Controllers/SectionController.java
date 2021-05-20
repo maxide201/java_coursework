@@ -1,5 +1,7 @@
 package news.Controllers;
 
+import news.Models.Comment;
+import news.Models.News;
 import news.Models.Section;
 import news.Models.User;
 import news.Services.SectionService;
@@ -10,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -44,8 +48,9 @@ public class SectionController {
     public String GetSectionNews(@PathVariable("id") int id,
                                  Authentication authentication,
                                  Model model){
-        List<Section> aaa = sectionService.GetAllSections();
+        sectionService.GetAllSections();
         Section section = sectionService.FindById(id);
+        sortNewsAndComments(section.getNews());
         if(section != null) {
             model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
             model.addAttribute("formatForTime", new SimpleDateFormat("hh:mm"));
@@ -55,6 +60,7 @@ public class SectionController {
         }
        return "redirect:/sections";
     }
+
 
     @PostMapping("/create")
     public String AddSection(@RequestParam String name,
@@ -87,5 +93,14 @@ public class SectionController {
             user.setRole("UNKNOWN");
         }
         return user;
+    }
+
+    private void sortNewsAndComments(List<News> news) {
+        news.sort(Comparator.comparing(News::getDate));
+        Collections.reverse(news);
+        for (News elem: news) {
+            List<Comment> comments = elem.getComments();
+            comments.sort(Comparator.comparing(Comment::getDate));
+        }
     }
 }
