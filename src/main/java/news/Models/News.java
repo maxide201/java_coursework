@@ -26,6 +26,8 @@ public class News {
     private Date date;
     @OneToMany(mappedBy = "news", fetch = FetchType.EAGER)
     private List<Comment> comments;
+    @OneToMany(mappedBy = "news", fetch = FetchType.LAZY)
+    private List<Like> likes;
     @ManyToOne
     private Section section;
 }

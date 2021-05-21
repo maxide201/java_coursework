@@ -16,6 +16,17 @@
     </form>
     <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
     <p th:text="${post.getContent()}"></p>
+    <p th:text="${'Лайки: ' + post.getLikes().size()}"></p>
+    <form th:if="${!user.getRole().equals('UNKNOWN') && !T(news.Controllers.NewsController).isLikedByUser(user, post)}" method="POST" action="/news/like">
+        <input type="hidden" name="user_id" th:value="${user.getId()}">
+        <input type="hidden" name="news_id" th:value="${post.getId()}">
+        <button type="submit">Лайк</button>
+    </form>
+    <form th:if="${!user.getRole().equals('UNKNOWN') && T(news.Controllers.NewsController).isLikedByUser(user, post)}" method="POST" action="/news/unlike">
+        <input type="hidden" name="user_id" th:value="${user.getId()}">
+        <input type="hidden" name="news_id" th:value="${post.getId()}">
+        <button type="submit">Убрать лайк</button>
+    </form>
     <h4>Комментарии:</h4>
     <div th:each="comment : ${post.getComments()}">
         <div style="border: 1px solid black">

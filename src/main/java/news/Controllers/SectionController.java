@@ -4,6 +4,7 @@ import news.Models.Comment;
 import news.Models.News;
 import news.Models.Section;
 import news.Models.User;
+import news.Services.NewsService;
 import news.Services.SectionService;
 import news.Services.UserService;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("/sections")
 public class SectionController {
     private final SectionService sectionService;
-    private final UserService userService;
+    private final NewsService newsService;
     private String status;
 
     private void setStatus(String newStatus) {
@@ -30,9 +31,9 @@ public class SectionController {
         this.status = "";
     }
 
-    public SectionController(SectionService sectionService, UserService userService) {
+    public SectionController(SectionService sectionService, NewsService newsService) {
         this.sectionService = sectionService;
-        this.userService = userService;
+        this.newsService = newsService;
     }
     @GetMapping
     public String GetSections(Model model,
@@ -40,6 +41,9 @@ public class SectionController {
         model.addAttribute("sections", sectionService.GetAllSections());
         model.addAttribute("status", status);
         model.addAttribute("user", GetUser(authentication));
+        model.addAttribute("top_news", newsService.FindTopNews());
+        model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
+        model.addAttribute("formatForTime", new SimpleDateFormat("hh:mm"));
         reloadStatus();
         return "SectionController/sections";
     }

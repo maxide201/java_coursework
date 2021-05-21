@@ -28,3 +28,10 @@ create table if not exists comments
     user_id integer,
     news_id integer
 );
+
+create table if not exists likes
+(
+    id serial primary key,
+    user_id integer,
+    news_id integer
+);

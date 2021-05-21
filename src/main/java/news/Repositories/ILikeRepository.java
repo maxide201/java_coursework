@@ -2,12 +2,11 @@ package news.Repositories;
 
 import news.Models.Like;
 import news.Models.News;
+import news.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface INewsRepository extends JpaRepository<News, Integer> {
-    News findById(int id);
+public interface ILikeRepository extends JpaRepository<Like, Integer> {
+    Like findByUserAndNews(User user, News news);
 }
