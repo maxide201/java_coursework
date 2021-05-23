@@ -6,7 +6,6 @@ import news.Models.Section;
 import news.Models.User;
 import news.Services.NewsService;
 import news.Services.SectionService;
-import news.Services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +41,7 @@ public class SectionController {
         model.addAttribute("status", status);
         model.addAttribute("user", GetUser(authentication));
         model.addAttribute("top_news", newsService.FindTopNews());
+        model.addAttribute("last_news", newsService.FindLastNews());
         model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
         model.addAttribute("formatForTime", new SimpleDateFormat("hh:mm"));
         reloadStatus();
@@ -54,8 +54,8 @@ public class SectionController {
                                  Model model){
         sectionService.GetAllSections();
         Section section = sectionService.FindById(id);
-        sortNewsAndComments(section.getNews());
         if(section != null) {
+            sortNewsAndComments(section.getNews());
             model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
             model.addAttribute("formatForTime", new SimpleDateFormat("hh:mm"));
             model.addAttribute("section", section);

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${news_post.getTitle()}"></title>
+</head>
+<body>
+<a th:href="@{/sections/{id}(id = ${news_post.getSection().getId()})}">К новостям</a>
+<div th:each="post : ${news_post.getTitle()}">
+    <h1 th:text="${news_post.getTitle()}"></h1>
+
+    <form th:if="${user.getRole().equals('ADMIN')}" method="POST" action="/news/delete">
+        <input type="hidden" name="id" th:value="${news_post.getId()}">
+        <button type="submit">Удалить</button>
+    </form>
+
+    <img th:src="@{/img/{id}(id=${news_post.getImage_name()})}" width="300px">
+    <p th:text="${formatForDate.format(news_post.getDate())}" style="font-size: 12px"></p>
+    <p th:text="${news_post.getContent()}"></p>
+    <p th:text="${'Лайки: ' + news_post.getLikes().size()}"></p>
+
+    <form th:if="${!user.getRole().equals('UNKNOWN') && !T(news.Controllers.NewsController).isLikedByUser(user, news_post)}" method="POST" action="/news/like">
+        <input type="hidden" name="user_id" th:value="${user.getId()}">
+        <input type="hidden" name="news_id" th:value="${news_post.getId()}">
+        <button type="submit">Лайк</button>
+    </form>
+    <form th:if="${!user.getRole().equals('UNKNOWN') && T(news.Controllers.NewsController).isLikedByUser(user, news_post)}" method="POST" action="/news/unlike">
+        <input type="hidden" name="user_id" th:value="${user.getId()}">
+        <input type="hidden" name="news_id" th:value="${news_post.getId()}">
+        <button type="submit">Убрать лайк</button>
+    </form>
+
+    <h4>Комментарии:</h4>
+    <div th:each="comment : ${comments}">
+        <div style="border: 1px solid black">
+            <h5 th:text="${comment.getUser().getUsername()}"></h5>
+            <p th:text="${comment.getContent()}"></p>
+            <p th:text="${formatForTime.format(comment.getDate())}" style="font-size: 10px"></p>
+            <form th:if="${user.getRole().equals('ADMIN')}" method="POST" action="/comments/delete">
+                <input type="hidden" name="id" th:value="${comment.getId()}">
+                <input type="hidden" name="news_id" th:value="${news_post.getId()}">
+                <button type="submit">Удалить</button>
+            </form>
+        </div>
+    </div>
+    <form th:if="${!user.getRole().equals('UNKNOWN')}" method="POST" action="/comments">
+        <label for="content">Комментарий: </label>
+        <input type="text" id="content" name="content">
+        <input type="hidden" name="user_id" th:value="${user.getId()}">
+        <input type="hidden" name="news_id" th:value="${news_post.getId()}">
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+</body>
+</html>

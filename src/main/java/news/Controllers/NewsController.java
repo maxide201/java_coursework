@@ -1,25 +1,24 @@
 package news.Controllers;
 
-import news.Models.Like;
-import news.Models.News;
-import news.Models.Section;
-import news.Models.User;
+import news.Models.*;
 import news.Services.LikeService;
 import news.Services.NewsService;
 import news.Services.SectionService;
 import news.Services.UserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Multipart;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/news")
@@ -28,16 +27,8 @@ public class NewsController {
     private final SectionService sectionService;
     private final UserService userService;
     private final LikeService likeService;
-    private String status;
     @Value("${upload.path}")
     private String uploadPath;
-
-    private void setStatus(String newStatus) {
-        this.status = newStatus;
-    }
-    private void reloadStatus() {
-        this.status = "";
-    }
 
     public NewsController(NewsService newsService, SectionService sectionService, UserService userService, LikeService likeService) {
         this.newsService = newsService;
@@ -49,6 +40,24 @@ public class NewsController {
     public String CreatingNews(Model model) {
         model.addAttribute("sections", sectionService.GetAllSections());
         return "NewsController/create_news";
+    }
+
+    @GetMapping("/{id}")
+    public String GetNews(@PathVariable("id") int id,
+                          Authentication authentication,
+                          Model model) {
+        News news = newsService.findNewsById(id);
+        if(news != null) {
+            model.addAttribute("news_post", news);
+            model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
+            model.addAttribute("formatForTime", new SimpleDateFormat("hh:mm"));
+            model.addAttribute("user", GetUser(authentication));
+            model.addAttribute("comments", news.getComments().stream()
+                    .sorted(Comparator.comparing(Comment::getDate)).collect(Collectors.toList()));
+            return "NewsController/news";
+        }
+        return "SectionController/sections";
+
     }
 
     @PostMapping("/create")
@@ -106,7 +115,7 @@ public class NewsController {
             like.setUser(user);
             like.setNews(news);
             likeService.AddLike(like);
-            return "redirect:/sections/" + news.getSection().getId();
+            return "redirect:/news/" + news.getId();
         }
         return "redirect:/sections";
     }
@@ -121,7 +130,7 @@ public class NewsController {
             Like like = likeService.FindByUserAndNews(user, news);
             if (like != null)
                 likeService.DeleteLike(like);
-            return "redirect:/sections/" + news.getSection().getId();
+            return "redirect:/news/" + news.getId();
         }
         return "redirect:/sections";
     }
@@ -129,5 +138,16 @@ public class NewsController {
     public static boolean isLikedByUser(User user, News news)
     {
         return news.getLikes().stream().anyMatch(l -> l.getUser().getId() == user.getId());
+    }
+
+    private User GetUser(Authentication authentication) {
+        User user;
+        if(authentication != null)
+            user = (User)authentication.getPrincipal();
+        else {
+            user = new User();
+            user.setRole("UNKNOWN");
+        }
+        return user;
     }
 }

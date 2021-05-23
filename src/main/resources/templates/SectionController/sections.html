@@ -42,12 +42,26 @@
 
 </nav>
 
-<h3>Топ-10 популярных новостей</h3>
-<div th:each="post : ${top_news}">
-    <hr>
-    <a th:href="@{sections/{id}(id=${post.getSection().getId()})}"><h3 th:text="${post.getTitle()}"></h3></a>
-    <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
-    <p th:text="${'Лайки: ' + post.getLikes().size()}"></p>
+<div style="display: flex">
+    <div style="width: 50%">
+        <h3 align="center">Новости за последний день</h3>
+        <div th:each="post : ${last_news}">
+            <hr width="80%">
+            <a th:href="@{news/{id}(id=${post.getId()})}"><h3 th:text="${post.getTitle()}"></h3></a>
+            <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
+            <p th:text="${'Лайки: ' + post.getLikes().size()}"></p>
+        </div>
+    </div>
+
+    <div style="width: 50%">
+        <h3 align="center">Топ-10 популярных новостей</h3>
+        <div th:each="post : ${top_news}">
+            <hr width="80%">
+            <a th:href="@{news/{id}(id=${post.getId()})}"><h3 th:text="${post.getTitle()}"></h3></a>
+            <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
+            <p th:text="${'Лайки: ' + post.getLikes().size()}"></p>
+        </div>
+    </div>
 </div>
 </body>
 </html>

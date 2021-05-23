@@ -18,19 +18,11 @@ public class CommentsController {
     private final CommentService commentService;
     private final NewsService newsService;
     private final UserService userService;
-    private String status;
 
     public CommentsController(CommentService commentService, NewsService newsService, UserService userService) {
         this.commentService = commentService;
         this.newsService = newsService;
         this.userService = userService;
-    }
-
-    private void setStatus(String newStatus) {
-        this.status = newStatus;
-    }
-    private void reloadStatus() {
-        this.status = "";
     }
 
     @PostMapping
@@ -54,7 +46,7 @@ public class CommentsController {
             }
         }
         if(news != null)
-            return "redirect:/sections/"+news.getSection().getId();
+            return "redirect:/news/"+news.getId();
         else
             return "redirect:/sections";
     }
@@ -69,7 +61,7 @@ public class CommentsController {
             Comment comment = commentService.FindById(id);
             if(comment != null)
                 commentService.DeleteComment(comment);
-            return "redirect:/sections/" + news.getSection().getId();
+            return "redirect:/news/" + news.getId();
         }
         else
             return "redirect:/sections";

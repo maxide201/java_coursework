@@ -3,7 +3,6 @@ package news.Services;
 import news.Models.News;
 import news.Repositories.INewsRepository;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,11 +34,18 @@ public class NewsService {
 
     public List<News> FindTopNews() {
         return newsRepository.findAll().stream().sorted(Comparator.comparingInt(n -> -n.getLikes().size())).limit(10).collect(Collectors.toList());
+    }
 
+    public List<News> FindLastNews() {
+        return newsRepository.findLast();
     }
 
     public void DeleteNewsImage(News news){
         File image = new File(new File(uploadPath).getAbsolutePath() + "/" + news.getImage_name());
         image.delete();
+    }
+
+    public News findNewsById(int id) {
+        return newsRepository.findById(id);
     }
 }
