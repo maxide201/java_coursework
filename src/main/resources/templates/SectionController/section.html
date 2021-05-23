@@ -14,6 +14,7 @@
         <input type="hidden" name="id" th:value="${post.getId()}">
         <button type="submit">Удалить</button>
     </form>
+    <img th:src="@{/img/{id}(id=${post.getImage_name()})}" width="300px">
     <p th:text="${formatForDate.format(post.getDate())}" style="font-size: 12px"></p>
     <p th:text="${post.getContent()}"></p>
     <p th:text="${'Лайки: ' + post.getLikes().size()}"></p>

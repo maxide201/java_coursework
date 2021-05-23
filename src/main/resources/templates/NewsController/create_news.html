@@ -7,7 +7,7 @@
 <body>
 <h3>Создание новостного поста</h3>
 <a th:href="'/sections'">К разделам</a>
-<form method="POST" action="/news/create">
+<form method="POST" action="/news/create" enctype="multipart/form-data">
     <label for="title">Заголовок: </label>
     <input type="text" id="title" name="title">
     <br>
@@ -19,6 +19,10 @@
         <option th:each="section : ${sections}" th:text="${section.getName()}">
         </option>
     </datalist>
+    <br>
+    <label for="image">Загрузить изображение: </label>
+    <input type="file" name="image" id="image">
+    <br>
     <button type="submit">Создать</button>
 </form>
 </body>

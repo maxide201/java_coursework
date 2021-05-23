@@ -8,12 +8,18 @@ import news.Services.LikeService;
 import news.Services.NewsService;
 import news.Services.SectionService;
 import news.Services.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/news")
@@ -23,6 +29,8 @@ public class NewsController {
     private final UserService userService;
     private final LikeService likeService;
     private String status;
+    @Value("${upload.path}")
+    private String uploadPath;
 
     private void setStatus(String newStatus) {
         this.status = newStatus;
@@ -47,15 +55,23 @@ public class NewsController {
     public String AddNews(@RequestParam String title,
                           @RequestParam String content,
                           @RequestParam String section_name,
-                          Model model)
-    {
-        if(!title.equals("") && !content.equals("") && !section_name.equals("")) {
+                          @RequestParam MultipartFile image,
+                          Model model) throws IOException {
+        if(!title.equals("") && !content.equals("") && !section_name.equals("") && image != null) {
             News news = new News();
-            news.setTitle(title);
-            news.setContent(content);
+
             Section section = sectionService.FindByName(section_name);
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + image.getOriginalFilename().split("\\.")[1];
+            image.transferTo(new File( new File(uploadPath).getAbsolutePath() + "/" + resultFilename));
+
             news.setSection(section);
             news.setDate(new Date(System.currentTimeMillis()));
+            news.setTitle(title);
+            news.setContent(content);
+            news.setImage_name(resultFilename);
+
             newsService.AddNews(news);
             model.addAttribute("section", section);
         }
@@ -69,6 +85,7 @@ public class NewsController {
         News news = newsService.FindNewsById(id);
         if(news != null) {
             newsService.DeleteNews(news);
+
             return "redirect:/sections/" + news.getSection().getId();
         }
         else

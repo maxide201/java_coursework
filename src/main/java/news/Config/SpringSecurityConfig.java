@@ -1,4 +1,4 @@
-package news;
+package news.Config;
 
 import news.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/sections/delete", "/sections/create", "/comments/delete", "/news/delete", "/roles").hasAnyAuthority("ADMIN")
                 .antMatchers("/news/create").hasAnyAuthority("AUTHOR")
                 .antMatchers("/comments").hasAnyAuthority("USER", "AUTHOR", "ADMIN")
-                .antMatchers("/login", "/logout", "/sign","/signuperror", "/sections", "/sections/**").permitAll()
+                .antMatchers("/login", "/logout", "/sign","/signuperror", "/sections", "/sections/**", "/img/**").permitAll()
                 //.antMatchers("/news/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

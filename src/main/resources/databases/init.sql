@@ -4,6 +4,7 @@ create table if not exists news
     title text,
     content text,
     date date,
+    image_name text,
     section_id integer
 );
 create table if not exists sections
