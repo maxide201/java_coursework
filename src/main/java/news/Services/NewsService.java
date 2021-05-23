@@ -26,7 +26,9 @@ public class NewsService {
     public void AddNews(News news) {
         newsRepository.save(news);
     }
+
     public News FindNewsById(int id) { return newsRepository.findById(id);}
+
     public void DeleteNews(News news) {
         DeleteNewsImage(news);
         newsRepository.delete(news);
@@ -40,12 +42,13 @@ public class NewsService {
         return newsRepository.findLast();
     }
 
-    public void DeleteNewsImage(News news){
-        File image = new File(new File(uploadPath).getAbsolutePath() + "/" + news.getImage_name());
-        image.delete();
-    }
+    private void DeleteNewsImage(News news){
+        try {
+            File image = new File(new File(uploadPath).getAbsolutePath() + "/" + news.getImage_name());
+            image.delete();
+        } catch (NullPointerException e)
+        {
 
-    public News findNewsById(int id) {
-        return newsRepository.findById(id);
+        }
     }
 }

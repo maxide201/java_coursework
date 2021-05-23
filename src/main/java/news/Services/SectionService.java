@@ -21,10 +21,7 @@ public class SectionService {
         this.sectionRepository = sectionRepository;
     }
 
-    public void AddSection(Section section) {
-        sectionRepository.save(section);
-
-    }
+    public void AddSection(Section section) { sectionRepository.save(section); }
 
     public Section FindByName(String name) {
         return sectionRepository.findByName(name);
@@ -41,12 +38,19 @@ public class SectionService {
 
     public Section FindById(int id) { return sectionRepository.findById(id);  }
 
-    public void DeleteImages(Section section)
+    private void DeleteImages(Section section)
     {
-        for (News news : section.getNews())
+        try {
+
+
+            for (News news : section.getNews()) {
+                File image = new File(new File(uploadPath).getAbsolutePath() + "/" + news.getImage_name());
+                image.delete();
+            }
+        }
+        catch (NullPointerException e)
         {
-            File image = new File( new File(uploadPath).getAbsolutePath() + "/" + news.getImage_name());
-            image.delete();
+
         }
     }
 }

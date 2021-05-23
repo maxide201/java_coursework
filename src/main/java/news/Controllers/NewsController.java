@@ -46,7 +46,7 @@ public class NewsController {
     public String GetNews(@PathVariable("id") int id,
                           Authentication authentication,
                           Model model) {
-        News news = newsService.findNewsById(id);
+        News news = newsService.FindNewsById(id);
         if(news != null) {
             model.addAttribute("news_post", news);
             model.addAttribute("formatForDate", new SimpleDateFormat("yyyy.MM.dd "));
