@@ -7,19 +7,18 @@
 <body>
 <a th:href="@{/sections}">К разделам</a>
 <form method="POST" action="/roles">
-    <label for="usernames">Usernames: </label>
-    <input type="text" name="username" list="usernames">
-    <datalist id="usernames">
+    <label for="username">Usernames: </label>
+    <select id="username" name="username">
         <option th:each="user : ${users}" th:text="${user.getUsername()}">
         </option>
-    </datalist>
-    <label for="roles">Роли:</label>
-    <input type="text" name="role" list="roles">
-    <datalist id="roles">
-        <option value="ADMIN">
-        <option value="AUTHOR">
-        <option value="USER">
-    </datalist>
+    </select>
+
+    <label for="role">Роли: </label>
+    <select name="role" id="role">
+        <option>ADMIN</option>
+        <option>AUTHOR</option>
+        <option>USER</option>
+    </select>
     <button type="submit">Изменить роль</button>
     <p th:if="${status.equals('role_changed')}">Роль сменена</p>
     <p th:if="${status.equals('role_not_changed')}">Не удалось сменить роль</p>
