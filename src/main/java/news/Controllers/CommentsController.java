@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
+/**
+ * Контроллер для обработки запросов, связанных с комментариями
+ */
 @Controller
 @RequestMapping( "/comments")
 public class CommentsController {
@@ -25,6 +28,14 @@ public class CommentsController {
         this.userService = userService;
     }
 
+    /**
+     * Обработка POST-запроса на добавление нового комментария
+     * @param content текстовое содержание комментария
+     * @param user_id идентификатор пользовтаеля, оставившего комментарий
+     * @param news_id индекнтификатор поста, куда оставили комментарий
+     * @param model html-модель, которая будет отпарвлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @PostMapping
     public String AddComment(@RequestParam String content,
                              @RequestParam int user_id,
@@ -51,6 +62,13 @@ public class CommentsController {
             return "redirect:/sections";
     }
 
+    /**
+     * Обработка POST-запроса на удаление комментария
+     * @param id Идентификатор комментария
+     * @param news_id Идентификатор новостного поста
+     * @param model html-модель, которая будет отпарвлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @PostMapping("/delete")
     public String DeleteComment(@RequestParam int id,
                                 @RequestParam int news_id,

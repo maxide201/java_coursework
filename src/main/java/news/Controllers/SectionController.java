@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Контроллер для обработки запросов, связанных с разделами новостей
+ */
 @Controller
 @RequestMapping("/sections")
 public class SectionController {
@@ -34,6 +37,12 @@ public class SectionController {
         this.sectionService = sectionService;
         this.newsService = newsService;
     }
+
+    /**
+     * Обработка GET-запроса на получение главной страницы с разделами и новостями
+     * @param model html-модель, которая будет отправлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @GetMapping
     public String GetSections(Model model,
                               Authentication authentication){
@@ -48,6 +57,13 @@ public class SectionController {
         return "SectionController/sections";
     }
 
+    /**
+     * Обработка GET-запроса на получение всех новостей определенного раздела
+     * @param id Идентификатор раздела
+     * @param authentication Данные ауентификации
+     * @param model html-модель, которая будет отправлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @GetMapping("/{id}")
     public String GetSectionNews(@PathVariable("id") int id,
                                  Authentication authentication,
@@ -65,7 +81,12 @@ public class SectionController {
        return "redirect:/sections";
     }
 
-
+    /**
+     * Обработка POST-запроса на создание нового раздела
+     * @param name Название раздела
+     * @param model html-модель, которая будет отправлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @PostMapping("/create")
     public String AddSection(@RequestParam String name,
                              Model model){
@@ -78,6 +99,12 @@ public class SectionController {
         return "redirect:/sections";
     }
 
+    /**
+     * Обработка POST-запроса на удаление раздела
+     * @param id Идентификатор раздела
+     * @param model html-модель, которая будет отправлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @PostMapping("/delete")
     public String DeleteSection(@RequestParam int id,
                                 Model model){
@@ -88,6 +115,11 @@ public class SectionController {
         return "redirect:/sections";
     }
 
+    /**
+     * Получение пользователя по ауентификационным данным
+     * @param authentication Данные ауентификации
+     * @return Пользователь. Либо новый, елси не авторизован, либо имеющийся в базе данных
+     */
     private User GetUser(Authentication authentication) {
         User user;
         if(authentication != null)
@@ -99,6 +131,10 @@ public class SectionController {
         return user;
     }
 
+    /**
+     * Сортировка новостей и комментариеав по дате их публикации
+     * @param news Список новостных постов
+     */
     private void sortNewsAndComments(List<News> news) {
         news.sort(Comparator.comparing(News::getDate));
         Collections.reverse(news);

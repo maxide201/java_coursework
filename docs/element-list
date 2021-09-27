@@ -1,0 +1,6 @@
+news
+news.Config
+news.Controllers
+news.Models
+news.Repositories
+news.Services

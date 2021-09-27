@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Контроллер для обработки запросов, связанных с пользователями
+ */
 @Controller
 public class UserController {
     private final UserService userService;
@@ -26,10 +29,22 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Обработка GET-запроса на получение странциы входа
+     * @return html документ в виде строки
+     */
     @GetMapping("/sign")
     public String signIndex() {
         return "UserController/signup";
     }
+
+    /**
+     * Обработка POST-запроса на регистрацию пользователя
+     * @param username Логин пользователя
+     * @param password Пароль пользователя
+     * @param model html-модель, которая будет отправлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @PostMapping("/sign")
     public String signUp(@RequestParam(name = "username") String username,
                          @RequestParam(name = "password") String password,
@@ -42,6 +57,12 @@ public class UserController {
             return "redirect:/sections";
         }
     }
+
+    /**
+     * Обработка GET-запроса на предоставления страницы изменения ролей пользователей
+     * @param model html-модель, которая будет отправлена в ответ пользователю
+     * @return html документ в виде строки
+     */
     @GetMapping("/roles")
     public String ShowChangeRoles(Model model) {
         model.addAttribute("users", userService.getAllUsers());
@@ -50,6 +71,12 @@ public class UserController {
         return "UserController/roles";
     }
 
+    /**
+     * Обработка POST-запроса на изменение роли пользователя
+     * @param username Имя пользователя
+     * @param role Роль пользователя
+     * @return html документ в виде строки
+     */
     @PostMapping("/roles")
     public String ChangeRoles(@RequestParam(name = "username") String username,
                               @RequestParam(name = "role") String role) {
